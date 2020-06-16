@@ -1,0 +1,24 @@
+# Default ignored files
+/workspace.xml
+
+# DIRECTORIES
+.idea/
+out/
+.settings/
+bin/
+target/
+.eclipse
+
+# FILES
+*.classpath
+*.project
+*.tmp
+~$*
+*.lst
+*.class
+*.kotlin_module
+*.jar
+*.war
+*.ear
+*.logs
+*.iml
