@@ -8,6 +8,7 @@ out/
 bin/
 target/
 .eclipse
+ProjectOne/
 
 # FILES
 *.classpath
@@ -22,3 +23,5 @@ target/
 *.ear
 *.logs
 *.iml
+*.mvn
+*.vs/
