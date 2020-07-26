@@ -1,0 +1,12 @@
+#Comments like this
+
+*.md
+*.zip
+*.7z
+
+
+#DIRECTORIES
+/.git
+/.idea
+/.mvn
+/.vs

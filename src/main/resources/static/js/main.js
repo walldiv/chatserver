@@ -8,8 +8,10 @@ var messageInput = document.querySelector('#message');
 var messageArea = document.querySelector('#messageArea');
 var connectingElement = document.querySelector('.connecting');
 
+
 var stompClient = null;
 var username = null;
+var myChannel = null;
 
 var colors = [
     '#2196F3', '#32c787', '#00BCD4', '#ff5652',
@@ -20,7 +22,7 @@ var colors = [
 function connect(event) {
     username = document.querySelector('#name').value.trim();
 
-    if(username) {
+    if (username) {
         usernamePage.classList.add('hidden');
         chatPage.classList.remove('hidden');
 
@@ -41,10 +43,22 @@ function onConnected() {
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
         {},
-        JSON.stringify({sender: username, type: 'JOIN'})
+        JSON.stringify({ sender: username, type: 'JOIN' })
     )
 
     connectingElement.classList.add('hidden');
+}
+
+//CHANGE THE CHANNELS/TOPICS FROM SELECT OPTIONS LIST
+function changeChatChannel(channel) {
+    console.log("changeChatChannel()");
+    stompClient.subscribe(channel, onMessageReceived);
+    stompClient.send("/app/chat.addUser",
+        {},
+        JSON.stringify({ sender: username, type: 'JOIN' })
+    )
+    connectingElement.classList.add('hidden');
+    alert("CHANGED CHAT CHANNEL TO " + channel);
 }
 
 
@@ -56,7 +70,7 @@ function onError(error) {
 
 function sendMessage(event) {
     var messageContent = messageInput.value.trim();
-    if(messageContent && stompClient) {
+    if (messageContent && stompClient) {
         var chatMessage = {
             sender: username,
             content: messageInput.value,
@@ -74,7 +88,7 @@ function onMessageReceived(payload) {
 
     var messageElement = document.createElement('li');
 
-    if(message.type === 'JOIN') {
+    if (message.type === 'JOIN') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
     } else if (message.type === 'LEAVE') {

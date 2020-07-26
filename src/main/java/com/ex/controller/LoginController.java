@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class LoginController {
@@ -29,10 +27,12 @@ public class LoginController {
 
     @GetMapping("/")
     public String loadPage(Model model, HttpSession session) {
-        System.out.println("GET FIRED");
         model.addAttribute("user", new User());
+        Boolean success = (Boolean)session.getAttribute("LoginSuccess");
+        model.addAttribute("loginSuccess", success);
         User thisUser = (User)session.getAttribute("SessionUser");
         logger.info("SESSION VARIABLE {}", thisUser);
+        logger.info("SESSION VARIABLE {}", success);
         return "index.html";
     }
 
@@ -48,9 +48,13 @@ public class LoginController {
         if(storedUser != null){
             session.setAttribute("SessionUser", storedUser);
             user = storedUser;
+            logger.info("STORED USER IS -> {}", storedUser);
+            return "redirect:/chatconnect";
         }
-        logger.info("STORED USER IS -> {}", storedUser);
-        return "redirect:/chatconnect";
+        else {
+            session.setAttribute("LoginSuccess", false);
+            return "redirect:/";
+        }
     }
 
 }

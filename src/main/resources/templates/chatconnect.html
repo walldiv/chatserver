@@ -32,6 +32,10 @@
         <div class="chat-container">
             <div class="chat-header">
                 <h2>Spring WebSocket Chat Demo</h2>
+                <select name="channels" id="channels">
+                    <option value="/topic/public">PUBLIC</option>
+                    <option value="/topic/Channel1">CHANNEL 1</option>
+                </select>
             </div>
             <div class="connecting">
                 Connecting...
@@ -54,25 +58,30 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
     <script src="/js/main.js"></script>
     <script th:inline="javascript">
-        window.onload = function () {
-            var user1 = /*[[${user}]]*/;
-            showUser(user1.username);
-        };
+        $('#channels').change(function () {
+            var channel = document.getElementById("channels").value;
+            alert(channel);
+            changeChatChannel(channel);
+        })
 
-        function showUser(user) {
-            alert(user);
-        }
+        //THIS IS NONFUNCTIONAL - LOOK TO FIX WITH THYMELEAF
+        // window.onload = function () {
+        //     var user1 = /*[[${user}]]*/;
+        //     if (user1 != null) {
+        //         document.getElementById("name").value = user1.username;
+        //         connect();
+        //     }
 
-        // $(function(){
-        //     //var user = @Html.Raw(Json.Encode(Model));
-        //     var user = '${user}';
-        //     alert(JSON.parse(user));
-        // });
-        // $(document).ready(function () {
-            // user = '${user}';
-            // let username = JSON.parse(user);
-            // alert(JSON.parse('${user}'));
-        // });
+        //     $('#channels').on('change', function () {
+        //         //alert("CHANGES MADE");
+        //         var channel = document.getElementById("channels").value;
+        //         changeChatChannel(channel);
+        //     });
+        // };
+    </script>
+    <script>
+        $(document).ready(function () {
+        });    
     </script>
 </body>
 
