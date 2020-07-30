@@ -65,19 +65,19 @@
         })
 
         //THIS IS NONFUNCTIONAL - LOOK TO FIX WITH THYMELEAF
-        // window.onload = function () {
-        //     var user1 = /*[[${user}]]*/;
-        //     if (user1 != null) {
-        //         document.getElementById("name").value = user1.username;
-        //         connect();
-        //     }
+        window.onload = function () {
+            var user1 = /*[[${user}]]*/;
+            if (user1 != null) {
+                document.getElementById("name").value = user1.username;
+                connect();
+            }
 
-        //     $('#channels').on('change', function () {
-        //         //alert("CHANGES MADE");
-        //         var channel = document.getElementById("channels").value;
-        //         changeChatChannel(channel);
-        //     });
-        // };
+            // $('#channels').on('change', function () {
+            //     //alert("CHANGES MADE");
+            //     var channel = document.getElementById("channels").value;
+            //     changeChatChannel(channel);
+            // });
+        };
     </script>
     <script>
         $(document).ready(function () {
