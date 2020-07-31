@@ -39,6 +39,7 @@ function connect(event) {
 function onConnected() {
     // Subscribe to the Public Topic
     stompClient.subscribe('/topic/public', onMessageReceived);
+    myChannel = "public";
 
     // Tell your username to the server
     stompClient.send("/app/chat.addUser",
@@ -52,13 +53,14 @@ function onConnected() {
 //CHANGE THE CHANNELS/TOPICS FROM SELECT OPTIONS LIST
 function changeChatChannel(channel) {
     console.log("changeChatChannel()");
-    stompClient.subscribe(channel, onMessageReceived);
-    stompClient.send("/app/chat.addUser",
+    myChannel = channel;
+    stompClient.subscribe(`/topic/${channel}`, onMessageReceived);
+    stompClient.send(`/app/chat.addUser.${myChannel}`,
         {},
         JSON.stringify({ sender: username, type: 'JOIN' })
     )
     connectingElement.classList.add('hidden');
-    alert("CHANGED CHAT CHANNEL TO " + channel);
+    // alert("CHANGED CHAT CHANNEL TO " + channel);
 }
 
 
@@ -76,7 +78,8 @@ function sendMessage(event) {
             content: messageInput.value,
             type: 'CHAT'
         };
-        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage));
+        // alert(`SENDING MESSAGE TO: ${myChannel}`);
+        stompClient.send(`/app/chat.sendMessage.${myChannel}`, {}, JSON.stringify(chatMessage));
         messageInput.value = '';
     }
     event.preventDefault();
