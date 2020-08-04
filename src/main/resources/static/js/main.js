@@ -37,16 +37,18 @@ function connect(event) {
 //Upon successful connection, the client subscribes to /topic/public destination and tells the user’s name
 //to the server by sending a message to the /app/chat.addUser destination.
 function onConnected() {
-    // Subscribe to the Public Topic
-    stompClient.subscribe('/topic/public', onMessageReceived);
-    myChannel = "public";
+    stompClient.subscribe('/app/chat.public', function (message) {
+        alert(message);
+    }, { 'username': username });
 
+    // Subscribe to the Public Topic
+    stompClient.subscribe('/topic/chat.public', onMessageReceived);
     // Tell your username to the server
-    stompClient.send("/app/chat.addUser",
+    stompClient.send('/app/chat.addUser.public',
         {},
         JSON.stringify({ sender: username, type: 'JOIN' })
     )
-
+    myChannel = "public";
     connectingElement.classList.add('hidden');
 }
 
@@ -54,7 +56,11 @@ function onConnected() {
 function changeChatChannel(channel) {
     console.log("changeChatChannel()");
     myChannel = channel;
-    stompClient.subscribe(`/topic/${channel}`, onMessageReceived);
+    //SUBSCRIPTION TO CHANNEL FOR RETRIEVAL OF PERSONS LIST
+    stompClient.subscribe('/app/chat.public', function (message) {
+        alert(message);
+    }, { 'username': username });
+    //JOIN CHANNEL BROADCAST TO CHATROOM
     stompClient.send(`/app/chat.addUser.${myChannel}`,
         {},
         JSON.stringify({ sender: username, type: 'JOIN' })
@@ -85,6 +91,28 @@ function sendMessage(event) {
     event.preventDefault();
 }
 
+//adds the person to the peoples list locally when a message is
+//received that a person has joined channel
+function addPersonToPeopleList(person) {
+    alert("AddingPersonToPeopleList FIRED!!!");
+    var peopleList = document.getElementById('peopleList');
+
+    var messageElement = document.createElement('li');
+    messageElement.classList.add('chat-message');
+    var avatarElement = document.createElement('i');
+    var avatarText = document.createTextNode(person.sender[0]);
+    avatarElement.appendChild(avatarText);
+    avatarElement.style['background-color'] = getAvatarColor(person.sender);
+
+    messageElement.appendChild(avatarElement);
+
+    var usernameElement = document.createElement('span');
+    var usernameText = document.createTextNode(person.sender);
+    usernameElement.appendChild(usernameText);
+    messageElement.appendChild(usernameElement);
+
+    peopleList.appendChild(messageElement);
+}
 
 function onMessageReceived(payload) {
     var message = JSON.parse(payload.body);
@@ -94,6 +122,7 @@ function onMessageReceived(payload) {
     if (message.type === 'JOIN') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' joined!';
+        addPersonToPeopleList(message);
     } else if (message.type === 'LEAVE') {
         messageElement.classList.add('event-message');
         message.content = message.sender + ' left!';

@@ -157,7 +157,8 @@ button.accent {
     overflow: auto;
     overflow-y: scroll;
     padding: 0 20px 0px 20px;
-    height: calc(100% - 150px);
+    height: 100%;
+    /* height: calc(100% - 150px); */
 }
 
 #chat-page #messageForm {
@@ -245,9 +246,9 @@ button.accent {
     padding-top: 5px;
     text-align: center;
     color: #777;
-    position: absolute;
+    /* position: absolute;
     top: 65px;
-    width: 100%;
+    width: 100%; */
 }
 
 

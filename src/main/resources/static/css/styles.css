@@ -31,3 +31,23 @@ legend.custBorder {
 .fill80 {
     height: 80%;
 }
+
+.heading1 {
+    border-bottom: 3px solid black;
+}
+
+.outer {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.inner-fixed {
+    height: auto;
+    /* background-color: grey; */
+  }
+   
+.inner-remaining {
+    /* background-color: #DDDDDD; */
+    flex-grow : 1;
+}

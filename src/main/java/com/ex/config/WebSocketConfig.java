@@ -25,4 +25,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.enableSimpleBroker("/topic");
         logger.info("WebSocketConfig::configureMessageBroker()");
     }
+
+
 }
