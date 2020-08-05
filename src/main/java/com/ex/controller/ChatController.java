@@ -74,14 +74,15 @@ public class ChatController {
      * @return - any type/literal that you want to pass back to the client.
      */
     @SubscribeMapping("/chat.{dest}")
-    public Collection<String> SubscribeCustom(@DestinationVariable String dest, @Header("username") String username) {
-        Collection<String> users = new ArrayList<>();
+    public Collection<User> SubscribeCustom(@DestinationVariable String dest, @Header("username") String username) {
+        Collection<User> users = new ArrayList<>();
         User thisUser = userRepository.findByUsername(username);
         if(thisUser != null) {
             subscriberRepo.add(dest, thisUser);
             Collection<User> tempusers = subscriberRepo.getActiveSessions().getValues(dest);
             for (User u : tempusers) {
-                users.add(u.getUsername());
+                u.setPassword("");
+                users.add(u);
             }
             logger.info("ChatController::SubscribeCustom() USERS IN CHANNEL: /app/chat.{} => {}", dest, users);
         }
